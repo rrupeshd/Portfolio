@@ -221,8 +221,8 @@ with tab3:
         st.subheader("📜 Specializations")
         cimglink="https://s3.amazonaws.com/coursera_assets/meta_images/generated/CERTIFICATE_LANDING_PAGE/CERTIFICATE_LANDING_PAGE"
         image=cimglink+"~0N5VQAGERT8F/CERTIFICATE_LANDING_PAGE~0N5VQAGERT8F.jpeg"
-		st.image(image, caption="Python for Everybody")
-
+        st.image(image, caption="Python for Everybody")
+		
     st.write("---") # Adding a separator for clarity
 
     # --- Certifications Images Section ---
