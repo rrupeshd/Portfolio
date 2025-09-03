@@ -231,7 +231,7 @@ tab1, tab2, tab3, tab4 = st.tabs(["🤖 RupeshBot", "🏢 Work Experience", "�
 # TAB 1: Chat (Gemini + Fallback)
 # ------------------------------
 with tab1:
-    st.header("RupeshBot: Your AI Career Assistant")
+    st.header("Meet RupeshBot - Quick answers from my resume")
 
     # Mode badge (truthful!)
     if GEMINI_OK:
