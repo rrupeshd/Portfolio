@@ -344,7 +344,7 @@ with tab3:
     with col2: st.image(f"{cimg}~DZSE9773S8A2/CERTIFICATE_LANDING_PAGE~DZSE9773S8A2.jpeg", caption="SQL for Data Science")
     with col3: st.image(f"{cimg}~9CLH6FXWBB3G/CERTIFICATE_LANDING_PAGE~9CLH6FXWBB3G.jpeg", caption="Data Visualization with Tableau")
     with col4: st.image(f"{cimg}~NAJL962VEGM5/CERTIFICATE_LANDING_PAGE~NAJL962VEGM5.jpeg", caption="Basic Statistics")
-    with col5: st.image(f"{cimg}~DFU_L2ABS8TD/CERTIFICATE_LANDING_PAGE~DFU5L2ABS8TD.jpeg", caption="Business Metrics for Data-Driven Companies")
+    with col5: st.image(f"{cimg}~DFU5L2ABS8TD/CERTIFICATE_LANDING_PAGE~DFU5L2ABS8TD.jpeg", caption="Business Metrics for Data-Driven Companies")
     with col6: st.image(f"{cimg}~THW33CM8UBUH/CERTIFICATE_LANDING_PAGE~THW33CM8UBUH.jpeg", caption="Tools for Data Science")
 
 with tab4:
