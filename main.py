@@ -106,36 +106,40 @@ with tab1:
     st.write("Ask me anything about Rupesh's skills, experience, or education. I'm trained on his resume.")
     st.write("*Note: I am a simple rule-based bot and can only answer specific questions based on keywords.*")
 
-    def get_bot_response(user_input):
-        text = user_input.lower()
-        responses = {
-            "skills": "Rupesh is skilled in:\n"
-                      [cite_start]"  - **Gen AI:** ChatGPT, GPT Agents, Agentic AI, MCP, Prompt Engineering [cite: 29]\n"
-                      [cite_start]"  - **Programming & Analysis:** Python (Pandas, NumPy, Scikit-Learn), R [cite: 33]\n"
-                      [cite_start]"  - **Databases:** SQL (MSSQL, MySQL) [cite: 34]\n"
-                      [cite_start]"  - **Dashboards & BI:** Power BI, Looker Studio, Tableau [cite: 35]\n"
-                      [cite_start]"  - **Automation:** Excel VBA, Python scripting [cite: 36]\n"
-                      [cite_start]"  - **Cloud:** Azure Databricks [cite: 37]\n"
-                      [cite_start]"  - **ML:** Regression, predictive modeling [cite: 38]",
-            [cite_start]"experience": "Rupesh has 9+ years of experience[cite: 5]. [cite_start]He is currently a Lead Analyst at Annalect India[cite: 9]. [cite_start]Previously, he worked at Merkle [cite: 14][cite_start], Ugam Solutions [cite: 20][cite_start], and Tata Consultancy Services[cite: 23].",
-            [cite_start]"annalect": "At **Annalect India** (Aug 2023 - Present), Rupesh is a **Lead Analyst - Marketing Science**[cite: 9]. [cite_start]He leads a team of six [cite: 11][cite_start], manages The Home Depot campaign analytics [cite: 13][cite_start], and automates reporting pipelines[cite: 14].",
-            [cite_start]"merkle": "Rupesh worked at **Merkle** (Mar 2022 - Aug 2023) as a **Lead Analyst**[cite: 14]. [cite_start]He developed custom dashboards [cite: 16][cite_start], built predictive models with over 99% accuracy [cite: 17][cite_start], and collaborated with stakeholders on data solutions[cite: 19].",
-            [cite_start]"ugam": "As a **Senior Data Analyst** at **Ugam Solutions** (May 2017 - Mar 2022), he analyzed large datasets [cite: 21][cite_start], used BI tools for reporting [cite: 22][cite_start], and automated data visualizations[cite: 22].",
-            [cite_start]"tcs": "At **Tata Consultancy Services** (Jan 2016 - May 2017), Rupesh worked as a **Data Analyst**, where he extracted, cleaned, and analyzed project data and created ad-hoc reports[cite: 24, 25].",
-            [cite_start]"education": "Rupesh holds a **Bachelor of Computer Applications (BCA)** from North Maharashtra University, India[cite: 27].",
-            "contact": "You can contact Rupesh via:\n"
-                       [cite_start]"  - **Email:** rupeshdubey999@gmail.com [cite: 3]\n"
-                       [cite_start]"  - **Phone:** +91 820-054-2230 [cite: 3]\n"
-                       [cite_start]"  - **LinkedIn:** linkedin.com/in/rupeshdubey9/ [cite: 3]",
-            [cite_start]"achievements": "Key achievements include: 70% cost savings by automating analytics workflows [cite: 42][cite_start], 99% accuracy in revenue forecasts [cite: 42][cite_start], and receiving 16+ 'Best Performer' awards in one year[cite: 43].",
-            [cite_start]"python": "Rupesh is proficient in Python and its data science libraries like Pandas, NumPy, Scikit-Learn, and Streamlit[cite: 33].",
-            "hello": "Hello! How can I help you learn more about Rupesh's career?",
-            "hi": "Hi there! Feel free to ask me about Rupesh's skills, experience, or education."
-        }
-        for keyword, response in responses.items():
-            if keyword in text:
-                return response
-        return "I'm sorry, I can only answer questions about Rupesh Dubey's professional background. Please ask about his skills, experience, education, or achievements."
+def get_bot_response(user_input):
+    text = user_input.lower()
+    responses = {
+        # --- THIS IS THE CORRECTED PART ---
+        "skills": """
+        Rupesh is skilled in:
+          - **Gen AI:** ChatGPT, GPT Agents, Agentic AI, MCP, Prompt Engineering
+          - **Programming & Analysis:** Python (Pandas, NumPy, Scikit-Learn), R
+          - **Databases:** SQL (MSSQL, MySQL)
+          - **Dashboards & BI:** Power BI, Looker Studio, Tableau
+          - **Automation:** Excel VBA, Python scripting
+          - **Cloud:** Azure Databricks
+          - **ML:** Regression, predictive modeling
+        """,
+        # --- END OF CORRECTION ---
+        "experience": "Rupesh has 9+ years of experience. He is currently a Lead Analyst at Annalect India. Previously, he worked at Merkle, Ugam Solutions, and Tata Consultancy Services.",
+        "annalect": "At **Annalect India** (Aug 2023 - Present), Rupesh is a **Lead Analyst - Marketing Science**. He leads a team of six, manages The Home Depot campaign analytics, and automates reporting pipelines.",
+        "merkle": "Rupesh worked at **Merkle** (Mar 2022 - Aug 2023) as a **Lead Analyst**. He developed custom dashboards, built predictive models with over 99% accuracy, and collaborated with stakeholders on data solutions.",
+        "ugam": "As a **Senior Data Analyst** at **Ugam Solutions** (May 2017 - Mar 2022), he analyzed large datasets, used BI tools for reporting, and automated data visualizations.",
+        "tcs": "At **Tata Consultancy Services** (Jan 2016 - May 2017), Rupesh worked as a **Data Analyst**, where he extracted, cleaned, and analyzed project data and created ad-hoc reports.",
+        "education": "Rupesh holds a **Bachelor of Computer Applications (BCA)** from North Maharashtra University, India.",
+        "contact": "You can contact Rupesh via:\n"
+                   "  - **Email:** rupeshdubey999@gmail.com\n"
+                   "  - **Phone:** +91 820-054-2230\n"
+                   "  - **LinkedIn:** linkedin.com/in/rupeshdubey9/",
+        "achievements": "Key achievements include: 70% cost savings by automating analytics workflows, 99% accuracy in revenue forecasts, and receiving 16+ 'Best Performer' awards in one year.",
+        "python": "Rupesh is proficient in Python and its data science libraries like Pandas, NumPy, Scikit-Learn, and Streamlit.",
+        "hello": "Hello! How can I help you learn more about Rupesh's career?",
+        "hi": "Hi there! Feel free to ask me about Rupesh's skills, experience, or education."
+    }
+    for keyword, response in responses.items():
+        if keyword in text:
+            return response.strip() # Using .strip() to remove any leading/trailing whitespace
+    return "I'm sorry, I can only answer questions about Rupesh Dubey's professional background. Please ask about his skills, experience, education, or achievements."
 
     if "messages" not in st.session_state:
         st.session_state.messages = [{"role": "assistant", "content": "Ask me about Rupesh's career!"}]
