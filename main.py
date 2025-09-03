@@ -81,7 +81,7 @@ with st.container():
     col1, col2 = st.columns([1, 2], gap="large")
     with col1:
         # Using a reliable URL for the image to avoid broken paths
-        st.image('https://i.imgur.com/pyfGL7D.png', width=250) 
+        st.image('https://raw.githubusercontent.com/rrupeshd/Portfolio/refs/heads/main/Profile_Pic.png', width=250) 
     with col2:
         st.title("Rupesh Dubey")
         st.subheader("Lead - Marketing Science")
