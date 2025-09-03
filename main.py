@@ -208,24 +208,48 @@ with tab3:
     with col1:
         st.subheader("🌐 Socials")
         st.markdown("🔗 [LinkedIn](https://linkedin.com/in/rupeshdubey9/)")
-        st.markdown("🔗 [Twitter / X](https://twitter.com/your-username-placeholder)")
-        st.markdown("🔗 [Instagram](https://instagram.com/your-username-placeholder)")
+        st.markdown("🔗 [Twitter / X](https://x.com/RrupeshD)")
+        st.markdown("🔗 [Instagram](https://www.instagram.com/rupeshdubey9/)")
     with col2:
         st.subheader("💻 Professional")
-        st.markdown("🔗 [GitHub](https://github.com/your-username-placeholder)")
-        st.markdown("🔗 [My App Portfolio](https://your-app-portfolio-link.com)")
-        st.markdown("🔗 [Kaggle](https://kaggle.com/your-username-placeholder)")
+        st.markdown("🔗 [GitHub](https://github.com/rrupeshd)")
+        st.markdown("🔗 [My Other Web App Link](rupeshml.streamlit.app)")
+        st.markdown("🔗 [Kaggle](https://www.kaggle.com/rupeshdubey999)")
     with col3:
         st.subheader("📜 Certifications")
-        st.markdown("🔗 [Google Data Analytics](https://your-cert-link-placeholder.com)")
+        st.markdown("🔗 [Google Data Analytics]()")
         st.markdown("🔗 [Azure Data Scientist](https://your-cert-link-placeholder.com)")
         st.markdown("🔗 [Python for Data Science](https://your-cert-link-placeholder.com)")
+
+	st.subheader("📜 Certifications")
+    col1, col2, col3, col4, col5, col6 = st.columns(6)
+
+    cimglink="https://s3.amazonaws.com/coursera_assets/meta_images/generated/CERTIFICATE_LANDING_PAGE/CERTIFICATE_LANDING_PAGE"
+    with col1:
+        image=cimglink+"~7FLA7JPYU273/CERTIFICATE_LANDING_PAGE~7FLA7JPYU273.jpeg"
+        st.image(image, caption="Python for Data Science, AI & Development", output_format="auto")
+    with col2:
+        image=cimglink+"~DZSE9773S8A2/CERTIFICATE_LANDING_PAGE~DZSE9773S8A2.jpeg"
+        st.image(image, caption="SQL for Data Science", output_format="auto")
+    with col3:
+        image=cimglink+"~9CLH6FXWBB3G/CERTIFICATE_LANDING_PAGE~9CLH6FXWBB3G.jpeg"
+        st.image(image, caption="Data Visualization and Communication with Tableau", output_format="auto")
+    with col4:
+        image=cimglink+"~NAJL962VEGM5/CERTIFICATE_LANDING_PAGE~NAJL962VEGM5.jpeg"
+        st.image(image, caption="Basic Statistics", output_format="auto")
+    with col5:
+        image=cimglink+"~DFU5L2ABS8TD/CERTIFICATE_LANDING_PAGE~DFU5L2ABS8TD.jpeg"
+        st.image(image, caption="Business Metrics for Data-Driven Companies", output_format="auto")
+    with col6:
+        image=cimglink+"~THW33CM8UBUH/CERTIFICATE_LANDING_PAGE~THW33CM8UBUH.jpeg"
+        st.image(image, caption="Tools for Data Science", output_format="auto")
+
 
 # --- TAB 4: DOWNLOAD RESUME ---
 with tab4:
     st.header("Download My Resume")
     st.write("Click the button below to download the latest version of my resume in PDF format.")
-    resume_file = Path(__file__).parent / "resume.pdf"
+    resume_file = Path(__file__).parent / "Rupesh_Resume.pdf"
     if resume_file.exists():
         with open(resume_file, "rb") as pdf_file:
             PDFbyte = pdf_file.read()
