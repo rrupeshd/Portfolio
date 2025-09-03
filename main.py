@@ -1,6 +1,7 @@
 import streamlit as st
 from pathlib import Path
 import google.generativeai as genai
+import json
 
 # ### FALLBACK ### Import libraries for the local NLP model
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -15,56 +16,23 @@ st.set_page_config(
 )
 
 # --- INJECT CUSTOM CSS ---
-# (CSS remains the same)
 st.markdown("""
 <style>
     /* Main app background */
-    .stApp {
-        background-color: #1a1a2e;
-        color: #e0e0e0;
-    }
-    .block-container {
-        padding-top: 2rem;
-    }
-    .hero-card {
-        background-color: #162447;
-        padding: 2rem;
-        border-radius: 15px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-        border: 1px solid #4a4e69;
-    }
+    .stApp { background-color: #1a1a2e; color: #e0e0e0; }
+    .block-container { padding-top: 2rem; }
+    .hero-card { background-color: #162447; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25); border: 1px solid #4a4e69; }
     .hero-card h1, .hero-card h2, .hero-card p { color: #f2f2f2; }
-    .st-emotion-cache-1de5w8g {
-        background-color: #1f4068;
-        border-radius: 10px;
-        border: 1px solid #4a4e69;
-    }
-    .stDownloadButton > button {
-        background-color: #e43f5a;
-        color: white;
-        border-radius: 5px;
-        padding: 10px 20px;
-        border: none;
-        font-weight: bold;
-        transition: background-color 0.3s ease;
-    }
+    .st-emotion-cache-1de5w8g { background-color: #1f4068; border-radius: 10px; border: 1px solid #4a4e69; }
+    .stDownloadButton > button { background-color: #e43f5a; color: white; border-radius: 5px; padding: 10px 20px; border: none; font-weight: bold; transition: background-color 0.3s ease; }
     .stDownloadButton > button:hover { background-color: #b8324f; }
     .stTabs [data-baseweb="tab-list"] { gap: 24px; }
-    .stTabs [data-baseweb="tab"] {
-        height: 50px;
-        white-space: pre-wrap;
-        background-color: transparent;
-        border-radius: 4px 4px 0px 0px;
-        gap: 8px;
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
+    .stTabs [data-baseweb="tab"] { height: 50px; white-space: pre-wrap; background-color: transparent; border-radius: 4px 4px 0px 0px; gap: 8px; padding-top: 10px; padding-bottom: 10px; }
     .stTabs [aria-selected="true"] { background-color: #1f4068; }
 </style>
 """, unsafe_allow_html=True)
 
-
-# --- GEMINI API CONFIGURATION ---
+# --- GEMINI API & RESUME CONTEXT ---
 gemini_model = None
 try:
     genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
@@ -72,12 +40,11 @@ try:
 except Exception:
     pass
 
-# --- RESUME CONTEXT FOR THE GEMINI BOT ---
-# (Resume context remains the same)
 resume_context = """
 Rupesh Dubey - Lead, Marketing Science
 
-SUMMARY: Data Science professional with 9+ years of expertise in AI-driven analytics, forecasting, and automation. Skilled in developing predictive models, designing interactive dashboards (Power BI, Looker Studio), and deploying end-to-end data solutions using Python, SQL, and Excel VBA. Proven ability to lead teams, optimize workflows, and translate complex data into strategic business insights.
+SUMMARY:
+Data Science professional with 9+ years of expertise in AI-driven analytics, forecasting, and automation. Skilled in developing predictive models, designing interactive dashboards (Power BI, Looker Studio), and deploying end-to-end data solutions using Python, SQL, and Excel VBA. Proven ability to lead teams, optimize workflows, and translate complex data into strategic business insights.
 
 CONTACT:
 - Email: rupeshdubey999@gmail.com
@@ -126,40 +93,31 @@ ACHIEVEMENTS:
 """
 
 # --- ### FALLBACK ### LOCAL NLP BOT SETUP ---
-
-# --- 1. EXPANDED TRAINING DATA ---
-# More examples have been added to make the bot smarter.
-training_data = {
-    "greetings": ["hello", "hi", "hey", "how are you"],
-    "skills": ["what are his skills?", "show me his technical skills", "what programming languages does he know?", "tell me about his skills", "skills"],
-    "experience_ugam": ["tell me about his ugam experience", "what did he do at ugam solutions?", "ugam", "ugam experience"],
-    "experience_merkle": ["what was his role at merkle?", "merkle experience", "merkle"],
-    "experience_annalect": ["what is he doing at annalect?", "annalect role", "annalect", "annalect experience"],
-    "experience_tcs": ["tell me about his time at tcs", "tcs experience", "tata consultancy services", "tcs"],
-    "education": ["what is his education?", "where did he study?", "what is his degree?", "education"],
-    "contact": ["how can I contact him?", "what's his email or phone number?", "contact info", "contact"],
-    "achievements": ["what are his achievements?", "any awards?", "show me his accomplishments", "achievements"],
-    "experience_general": ["what is his work experience?", "tell me about his career", "where has he worked?", "experience", "work history", "job experience"]
-}
-
-# 2. Responses: Pre-defined answers for each intent
-responses = {
-    "greetings": "Hello! How can I help you learn more about Rupesh's career?",
-    "skills": "Rupesh is skilled in Gen AI, Python (Pandas, NumPy, Scikit-Learn), R, SQL, Power BI, Looker Studio, Tableau, Excel VBA, and Azure Databricks.",
-    "experience_ugam": "As a Senior Data Analyst at Ugam Solutions (May 2017 - Mar 2022), he analyzed large datasets, used BI tools for reporting, and automated data visualizations.",
-    "experience_merkle": "Rupesh worked at Merkle (Mar 2022 - Aug 2023) as a Lead Analyst. He developed custom dashboards and built predictive models with over 99% accuracy.",
-    "experience_annalect": "At Annalect India (Aug 2023 - Present), Rupesh is a Lead Analyst. He leads a team of six, manages The Home Depot campaign analytics, and automates reporting pipelines.",
-    "experience_tcs": "At Tata Consultancy Services (Jan 2016 - May 2017), Rupesh worked as a Data Analyst, where he extracted, cleaned, and analyzed project data and created ad-hoc reports.",
-    "education": "Rupesh holds a Bachelor of Computer Applications (BCA) from North Maharashtra University, India.",
-    "contact": "You can contact Rupesh via Email: rupeshdubey999@gmail.com or on LinkedIn: linkedin.com/in/rupeshdubey9/",
-    "achievements": "His key achievements include 70% cost savings by automating analytics workflows and achieving 99% accuracy in revenue forecasts.",
-    "experience_general": "Rupesh has 9+ years of experience. He is currently a Lead Analyst at Annalect India. Previously, he worked at Merkle, Ugam Solutions, and Tata Consultancy Services.",
-    "fallback": "I'm sorry, I can only answer questions about Rupesh Dubey's professional background. Please ask about his skills, experience, or education."
-}
-
-# 3. Train the NLP Model
 @st.cache_resource
 def train_fallback_bot():
+    try:
+        with open('training_data.json', 'r') as f:
+            training_data = json.load(f)
+    except FileNotFoundError:
+        st.error("`training_data.json` not found. Please create the training file.")
+        return None
+
+    responses = {
+        "greetings": "Hello! How can I help you learn more about Rupesh's career?",
+        "skills": "Rupesh is skilled in Gen AI, Python (Pandas, NumPy, Scikit-Learn), R, SQL, Power BI, Looker Studio, Tableau, Excel VBA, and Azure Databricks.",
+        "skills_python": "Yes, Rupesh is proficient in Python and its data science libraries like Pandas, NumPy, and Scikit-Learn.",
+        "skills_dashboard": "Yes, Rupesh has extensive experience designing dashboards with tools like Power BI, Looker Studio, and Tableau.",
+        "experience_ugam": "As a Senior Data Analyst at Ugam Solutions (May 2017 - Mar 2022), he analyzed large datasets, used BI tools for reporting, and automated data visualizations.",
+        "experience_merkle": "Rupesh worked at Merkle (Mar 2022 - Aug 2023) as a Lead Analyst. He developed custom dashboards and built predictive models with over 99% accuracy.",
+        "experience_annalect": "At Annalect India (Aug 2023 - Present), Rupesh is a Lead Analyst. He leads a team of six, manages The Home Depot campaign analytics, and automates reporting pipelines.",
+        "experience_tcs": "At Tata Consultancy Services (Jan 2016 - May 2017), Rupesh was a Data Analyst, where he extracted, cleaned, and analyzed project data.",
+        "education": "Rupesh holds a Bachelor of Computer Applications (BCA) from North Maharashtra University, India.",
+        "contact": "You can contact Rupesh via Email: rupeshdubey999@gmail.com or on LinkedIn: linkedin.com/in/rupeshdubey9/",
+        "achievements": "His key achievements include 70% cost savings by automating analytics workflows and achieving 99% accuracy in revenue forecasts.",
+        "experience_general": "Rupesh has 9+ years of experience. He is currently a Lead Analyst at Annalect India. Previously, he worked at Merkle, Ugam Solutions, and Tata Consultancy Services.",
+        "fallback": "I'm sorry, that's a bit outside of what I can answer. I can only provide details from Rupesh's resume about his skills, education, and work experience."
+    }
+
     texts, labels = [], []
     for label, phrases in training_data.items():
         for phrase in phrases:
@@ -168,12 +126,17 @@ def train_fallback_bot():
     
     model = make_pipeline(TfidfVectorizer(), SVC(probability=True))
     model.fit(texts, labels)
-    return model
+    return model, responses
 
-fallback_model = train_fallback_bot()
+fallback_system = train_fallback_bot()
 
 def get_fallback_response(prompt):
-    confidence_threshold = 0.3 
+    if fallback_system is None:
+        return "The fallback system is not configured correctly."
+    
+    fallback_model, responses = fallback_system
+    confidence_threshold = 0.25 # Lowered threshold slightly for better matching
+    
     probabilities = fallback_model.predict_proba([prompt])[0]
     max_prob = max(probabilities)
 
@@ -184,7 +147,6 @@ def get_fallback_response(prompt):
         return responses["fallback"]
 
 # --- HERO SECTION ---
-# (This section remains unchanged)
 with st.container():
     st.markdown('<div class="hero-card">', unsafe_allow_html=True)
     col1, col2 = st.columns([1, 2], gap="large")
@@ -202,11 +164,10 @@ st.write("---")
 # --- TABS ---
 tab1, tab2, tab3, tab4 = st.tabs(["🤖 RupeshBot", "🏢 Work Experience", "🔗 Projects & Links", "📄 Download Resume"])
 
-# --- TAB 1: RUPESHBOT (WITH FALLBACK) ---
+# --- TAB 1: RUPESHBOT (FINAL VERSION) ---
 with tab1:
     st.header("RupeshBot: Your AI Career Assistant")
     
-    # --- 2. IMPROVED FALLBACK MESSAGE ---
     if gemini_model:
         st.write("I am an AI assistant powered by Google Gemini. Ask me anything about Rupesh's career based on his resume.")
     else:
@@ -223,7 +184,7 @@ with tab1:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
             
-    if prompt := st.chat_input("Ask about his experience at Ugam..."):
+    if prompt := st.chat_input("Ask about his dashboard experience..."):
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.markdown(prompt)
@@ -235,22 +196,38 @@ with tab1:
                     raise Exception("Gemini model not configured.")
                 
                 full_prompt = f"""
-                Your one and only task is to act as RupeshBot... (full prompt same as the previous correct version)
+                Your one and only task is to act as RupeshBot, an AI assistant representing Rupesh Dubey.
+                
+                **Rules and Persona:**
+                - You MUST answer questions based ONLY on the resume context provided below.
+                - You are FORBIDDEN from using any external knowledge.
+                - You MUST NOT discuss privacy concerns. Your purpose is to share the information from the provided resume.
+                - If a user asks about "he" or "him", you must assume they are referring to Rupesh.
+                - If a user provides a topic (e.g., "dashboarding experience"), treat it as a request to summarize all relevant information from the resume.
+                - If the information is not in the resume, you MUST respond with: "That specific detail isn't mentioned in Rupesh's resume, but here is what I can tell you about his related experience."
+                - Do not act as a career coach. Your only role is to be an expert on Rupesh's resume.
+
+                **Resume Context:**
+                ---
+                {resume_context}
+                ---
+
+                **User's Question:** "{prompt}"
+
+                Answer as RupeshBot.
                 """
-                response = gemini_model.generate_content(full_prompt)
+                response = model.generate_content(full_prompt)
                 response_text = response.text
             
             except Exception as e:
-                # This print statement is useful for debugging in your terminal
                 print(f"Gemini failed: {e}. Using fallback bot.")
                 response_text = get_fallback_response(prompt)
 
             st.markdown(response_text)
             st.session_state.messages.append({"role": "assistant", "content": response_text})
 
-# --- The rest of the tabs remain the same ---
-# (TAB 2, 3, and 4 code goes here, unchanged)
-# --- TAB 2: WORK EXPERIENCE ---
+# --- TAB 2, 3, AND 4 (UNCHANGED) ---
+# (The code for the other tabs remains the same as your file)
 with tab2:
     st.header("Interactive Career Timeline")
     # Expander sections go here as before...
