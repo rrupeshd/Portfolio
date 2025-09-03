@@ -9,13 +9,17 @@ st.set_page_config(
 )
 
 # --- INJECT CUSTOM CSS ---
-# This CSS enhances the UI, adds a hero card, and improves button styling
 st.markdown("""
 <style>
     /* Main app background */
     .stApp {
         background-color: #1a1a2e; /* Dark blue-purple background */
         color: #e0e0e0;
+    }
+    
+    /* --- FIX 3: REDUCE TOP PADDING --- */
+    .block-container {
+        padding-top: 2rem;
     }
 
     /* Hero section card */
@@ -74,24 +78,23 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# --- HERO SECTION (UPDATED) ---
-# We wrap the hero section in a container with our custom CSS class
+# --- HERO SECTION ---
 with st.container():
     st.markdown('<div class="hero-card">', unsafe_allow_html=True)
     col1, col2 = st.columns([1, 2], gap="large")
     with col1:
-        # Using a reliable URL for the image to avoid broken paths
         st.image('https://raw.githubusercontent.com/rrupeshd/Portfolio/refs/heads/main/Profile_Pic.png', width=250) 
     with col2:
         st.title("Rupesh Dubey")
         st.subheader("Lead - Marketing Science")
+        # --- FIX 2: REMOVED CITE TEXT ---
         st.write(
             """
-            [cite_start]Data Science professional with 9+ years of expertise in AI-driven analytics, forecasting, and automation[cite: 5].
-            [cite_start]Proven ability to lead teams, optimize workflows, and translate complex data into strategic business insights[cite: 7].
+            Data Science professional with 9+ years of expertise in AI-driven analytics, forecasting, and automation.
+            Proven ability to lead teams, optimize workflows, and translate complex data into strategic business insights.
             """
         )
-        st.write("📍 Vapi, Gujarat, India") # This location is from the context, not the resume text.
+        st.write("📍 Vapi, Gujarat, India")
     st.markdown('</div>', unsafe_allow_html=True)
 
 
@@ -100,16 +103,10 @@ st.write("---")
 # --- TABS ---
 tab1, tab2, tab3, tab4 = st.tabs(["🤖 RupeshBot", "🏢 Work Experience", "🔗 Projects & Links", "📄 Download Resume"])
 
-# --- TAB 1: RUPESHBOT ---
-with tab1:
-    st.header("RupeshBot: Your AI Career Assistant")
-    st.write("Ask me anything about Rupesh's skills, experience, or education. I'm trained on his resume.")
-    st.write("*Note: I am a simple rule-based bot and can only answer specific questions based on keywords.*")
-
+# --- BOT RESPONSE FUNCTION (can stay here) ---
 def get_bot_response(user_input):
     text = user_input.lower()
     responses = {
-        # --- THIS IS THE CORRECTED PART ---
         "skills": """
         Rupesh is skilled in:
           - **Gen AI:** ChatGPT, GPT Agents, Agentic AI, MCP, Prompt Engineering
@@ -120,7 +117,6 @@ def get_bot_response(user_input):
           - **Cloud:** Azure Databricks
           - **ML:** Regression, predictive modeling
         """,
-        # --- END OF CORRECTION ---
         "experience": "Rupesh has 9+ years of experience. He is currently a Lead Analyst at Annalect India. Previously, he worked at Merkle, Ugam Solutions, and Tata Consultancy Services.",
         "annalect": "At **Annalect India** (Aug 2023 - Present), Rupesh is a **Lead Analyst - Marketing Science**. He leads a team of six, manages The Home Depot campaign analytics, and automates reporting pipelines.",
         "merkle": "Rupesh worked at **Merkle** (Mar 2022 - Aug 2023) as a **Lead Analyst**. He developed custom dashboards, built predictive models with over 99% accuracy, and collaborated with stakeholders on data solutions.",
@@ -138,14 +134,23 @@ def get_bot_response(user_input):
     }
     for keyword, response in responses.items():
         if keyword in text:
-            return response.strip() # Using .strip() to remove any leading/trailing whitespace
+            return response.strip()
     return "I'm sorry, I can only answer questions about Rupesh Dubey's professional background. Please ask about his skills, experience, education, or achievements."
 
+# --- TAB 1: RUPESHBOT ---
+with tab1:
+    st.header("RupeshBot: Your AI Career Assistant")
+    st.write("Ask me anything about Rupesh's skills, experience, or education. I'm trained on his resume.")
+    st.write("*Note: I am a simple rule-based bot and can only answer specific questions based on keywords.*")
+    
+    # --- FIX 1: MOVED CHAT LOGIC INSIDE TAB 1 ---
     if "messages" not in st.session_state:
         st.session_state.messages = [{"role": "assistant", "content": "Ask me about Rupesh's career!"}]
+        
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
+            
     if prompt := st.chat_input("Ask about skills, experience, education..."):
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
@@ -158,8 +163,6 @@ def get_bot_response(user_input):
 # --- TAB 2: WORK EXPERIENCE ---
 with tab2:
     st.header("Interactive Career Timeline")
-
-    # --- Annalect ---
     with st.expander("🏢 **Lead Analyst - Marketing Science | Annalect India**", expanded=True):
         st.markdown("**📅 August 2023 - Present**")
         st.markdown(
@@ -170,8 +173,6 @@ with tab2:
             - Automated reporting pipelines to reduce manual effort.
             """
         )
-
-    # --- Merkle ---
     with st.expander("🏢 **Lead Analyst | Merkle**"):
         st.markdown("**📅 March 2022 - August 2023**")
         st.markdown(
@@ -181,8 +182,6 @@ with tab2:
             - Wrote and optimized scripts/queries for multi-source data extraction and analysis.
             """
         )
-
-    # --- Ugam Solutions ---
     with st.expander("🏢 **Senior Data Analyst | Ugam Solutions (A Merkle Company)**"):
         st.markdown("**📅 May 2017 - March 2022**")
         st.markdown(
@@ -192,8 +191,6 @@ with tab2:
             - Automated data visualizations and crafted compelling stories to drive decisions.
             """
         )
-
-    # --- Tata Consultancy Services ---
     with st.expander("🏢 **Data Analyst | Tata Consultancy Services**"):
         st.markdown("**📅 January 2016 - May 2017**")
         st.markdown(
@@ -202,6 +199,7 @@ with tab2:
             - Created ad-hoc reports and basic dashboards to track performance metrics.
             """
         )
+        
 # --- TAB 3: PROJECTS & LINKS ---
 with tab3:
     st.header("Find Me Online")
