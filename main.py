@@ -220,7 +220,7 @@ with tab3:
         st.markdown("🔗 [Google Data Analytics]()")
         st.markdown("🔗 [Azure Data Scientist](https://your-cert-link-placeholder.com)")
         st.markdown("🔗 [Python for Data Science](https://your-cert-link-placeholder.com)")
-
+	
 	st.subheader("📜 Certifications")
     col1, col2, col3, col4, col5, col6 = st.columns(6)
 
