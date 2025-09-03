@@ -35,10 +35,12 @@ st.markdown("""
 # --- GEMINI API & RESUME CONTEXT ---
 gemini_model = None
 try:
+    # This checks for the key in secrets.toml
     genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
     gemini_model = genai.GenerativeModel('gemini-1.5-flash')
-except Exception:
-    pass
+except (FileNotFoundError, KeyError, Exception):
+    # If secrets.toml or the key doesn't exist, it fails gracefully
+    gemini_model = None
 
 resume_context = """
 Rupesh Dubey - Lead, Marketing Science
@@ -106,7 +108,7 @@ def train_fallback_bot():
         "greetings": "Hello! How can I help you learn more about Rupesh's career?",
         "skills": "Rupesh is skilled in Gen AI, Python (Pandas, NumPy, Scikit-Learn), R, SQL, Power BI, Looker Studio, Tableau, Excel VBA, and Azure Databricks.",
         "skills_python": "Yes, Rupesh is proficient in Python and its data science libraries like Pandas, NumPy, and Scikit-Learn.",
-        "skills_dashboard": "Yes, Rupesh has extensive experience designing dashboards with tools like Power BI, Looker Studio, and Tableau.",
+        "skills_dashboard": "Yes, Rupesh has extensive experience designing dashboards with tools like Power BI, Looker Studio, and Tableau. He developed custom dashboards at Merkle and created basic ones at TCS.",
         "experience_ugam": "As a Senior Data Analyst at Ugam Solutions (May 2017 - Mar 2022), he analyzed large datasets, used BI tools for reporting, and automated data visualizations.",
         "experience_merkle": "Rupesh worked at Merkle (Mar 2022 - Aug 2023) as a Lead Analyst. He developed custom dashboards and built predictive models with over 99% accuracy.",
         "experience_annalect": "At Annalect India (Aug 2023 - Present), Rupesh is a Lead Analyst. He leads a team of six, manages The Home Depot campaign analytics, and automates reporting pipelines.",
@@ -135,7 +137,7 @@ def get_fallback_response(prompt):
         return "The fallback system is not configured correctly."
     
     fallback_model, responses = fallback_system
-    confidence_threshold = 0.25 # Lowered threshold slightly for better matching
+    confidence_threshold = 0.25
     
     probabilities = fallback_model.predict_proba([prompt])[0]
     max_prob = max(probabilities)
@@ -164,7 +166,7 @@ st.write("---")
 # --- TABS ---
 tab1, tab2, tab3, tab4 = st.tabs(["🤖 RupeshBot", "🏢 Work Experience", "🔗 Projects & Links", "📄 Download Resume"])
 
-# --- TAB 1: RUPESHBOT (FINAL VERSION) ---
+# --- TAB 1: RUPESHBOT (FINAL CORRECTED VERSION) ---
 with tab1:
     st.header("RupeshBot: Your AI Career Assistant")
     
@@ -193,7 +195,7 @@ with tab1:
             response_text = ""
             try:
                 if not gemini_model:
-                    raise Exception("Gemini model not configured.")
+                    raise Exception("Gemini model not configured. Switching to fallback.")
                 
                 full_prompt = f"""
                 Your one and only task is to act as RupeshBot, an AI assistant representing Rupesh Dubey.
@@ -216,21 +218,21 @@ with tab1:
 
                 Answer as RupeshBot.
                 """
-                response = model.generate_content(full_prompt)
+                # THIS IS THE BUG FIX: Use 'gemini_model', not 'model'
+                response = gemini_model.generate_content(full_prompt)
                 response_text = response.text
             
             except Exception as e:
-                print(f"Gemini failed: {e}. Using fallback bot.")
+                # This print statement is useful for debugging in your terminal
+                print(f"An error occurred: {e}. Using fallback bot.")
                 response_text = get_fallback_response(prompt)
 
             st.markdown(response_text)
             st.session_state.messages.append({"role": "assistant", "content": response_text})
 
 # --- TAB 2, 3, AND 4 (UNCHANGED) ---
-# (The code for the other tabs remains the same as your file)
 with tab2:
     st.header("Interactive Career Timeline")
-    # Expander sections go here as before...
     with st.expander("🏢 **Lead Analyst - Marketing Science | Annalect India**", expanded=True):
         st.markdown("**📅 August 2023 - Present**")
         st.markdown(
@@ -268,11 +270,9 @@ with tab2:
             """
         )
 
-# --- TAB 3: PROJECTS & LINKS ---
 with tab3:
     st.header("Find Me Online")
     st.write("Links to my socials, professional profiles, and project repositories.")
-    # Link sections go here as before...
     col1, col2, col3 = st.columns(3, gap="medium")
     with col1:
         st.subheader("🌐 Socials")
@@ -290,15 +290,13 @@ with tab3:
         image=cimglink+"~0N5VQAGERT8F/CERTIFICATE_LANDING_PAGE~0N5VQAGERT8F.jpeg"
         st.image(image, caption="Python for Everybody")
 		
-    st.write("---") # Adding a separator for clarity
+    st.write("---")
 
-    # --- Certifications Images Section ---
     st.subheader("My Certifications Showcase")
     col1, col2, col3, col4, col5, col6 = st.columns(6)
 
     cimglink="https://s3.amazonaws.com/coursera_assets/meta_images/generated/CERTIFICATE_LANDING_PAGE/CERTIFICATE_LANDING_PAGE"
     with col1:
-        image=cimglink+"~7FLA7JPYU273/CERTIFICATE_LANDING_PAGE~7FLA7JPYU273.jpeg"
         st.image(image, caption="Python for Data Science, AI & Development")
     with col2:
         image=cimglink+"~DZSE9773S8A2/CERTIFICATE_LANDING_PAGE~DZSE9773S8A2.jpeg"
@@ -316,7 +314,6 @@ with tab3:
         image=cimglink+"~THW33CM8UBUH/CERTIFICATE_LANDING_PAGE~THW33CM8UBUH.jpeg"
         st.image(image, caption="Tools for Data Science")
 
-# --- TAB 4: DOWNLOAD RESUME ---
 with tab4:
     st.header("Download My Resume")
     st.write("Click the button below to download the latest version of my resume in PDF format.")
