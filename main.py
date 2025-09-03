@@ -1,22 +1,3 @@
-Of course\! As a Streamlit and data science expert, I can certainly create a sleek, futuristic portfolio web app for you.
-
-This code will generate a multi-tab Streamlit application based on the information in your resume. It features a rule-based chatbot, an interactive experience timeline, a section for your projects and links, and a resume download function.
-
------
-
-### **Instructions to Run Your Portfolio App**
-
-1.  **Save the Code:** Save the Python code below into a file named `app.py`.
-2.  **Create a `requirements.txt` file:** In the same folder, create this file and add the single line: `streamlit`.
-3.  **Place Your Resume:** Download your resume and save it as `resume.pdf` in the *same folder* as `app.py`.
-4.  **Install Libraries:** Open your terminal or command prompt in that folder and run: `pip install -r requirements.txt`.
-5.  **Run the App:** In the same terminal, run the command: `streamlit run app.py`. Your new portfolio will open in your web browser\!
-
------
-
-### **Python Code (`app.py`)**
-
-```python
 import streamlit as st
 from pathlib import Path
 
@@ -245,5 +226,3 @@ with tab4:
         )
     else:
         st.error("Resume PDF not found. Please make sure 'resume.pdf' is in the same folder as the app.py file.")
-
-```
