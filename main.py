@@ -158,43 +158,50 @@ def get_bot_response(user_input):
 # --- TAB 2: WORK EXPERIENCE ---
 with tab2:
     st.header("Interactive Career Timeline")
+
+    # --- Annalect ---
     with st.expander("🏢 **Lead Analyst - Marketing Science | Annalect India**", expanded=True):
-        [cite_start]st.markdown("**📅 August 2023 - Present** [cite: 12]")
+        st.markdown("**📅 August 2023 - Present**")
         st.markdown(
             """
-            - [cite_start]Utilized AI agents to deliver next-generation insights and deliverables[cite: 10].
-            - [cite_start]Led a team of six analysts, overseeing daily operations[cite: 11].
-            - [cite_start]Managed creative-campaign analytics for The Home Depot (BBDO NY) to inform optimization[cite: 13].
-            - [cite_start]Automated reporting pipelines to reduce manual effort[cite: 14].
-            """
-        )
-    with st.expander("🏢 **Lead Analyst | Merkle**"):
-        [cite_start]st.markdown("**📅 March 2022 - August 2023** [cite: 15]")
-        st.markdown(
-            """
-            - [cite_start]Developed custom reports and dashboards to monitor key performance indicators[cite: 16].
-            - [cite_start]Built and deployed predictive analytics models to forecast future trends with 99% + accuracy[cite: 17].
-            - [cite_start]Wrote and optimized scripts/queries for multi-source data extraction and analysis[cite: 18].
-            """
-        )
-    with st.expander("🏢 **Senior Data Analyst | Ugam Solutions (A Merkle Company)**"):
-        [cite_start]st.markdown("**📅 May 2017 - March 2022** [cite: 30]")
-        st.markdown(
-            """
-            - [cite_start]Analyzed large datasets to uncover patterns, signals, and actionable insights[cite: 21].
-            - [cite_start]Utilized Business Objects, BI tools, and data-warehouse solutions for reporting[cite: 22].
-            - [cite_start]Automated data visualizations and crafted compelling stories to drive decisions[cite: 22].
-            """
-        )
-    with st.expander("🏢 **Data Analyst | Tata Consultancy Services**"):
-        [cite_start]st.markdown("**📅 January 2016 - May 2017** [cite: 31]")
-        st.markdown(
-            """
-            - [cite_start]Extracted, cleaned, and analyzed project data to support client deliverables[cite: 24].
-            - [cite_start]Created ad-hoc reports and basic dashboards to track performance metrics[cite: 25].
+            - Utilized AI agents to deliver next-generation insights and deliverables.
+            - Led a team of six analysts, overseeing daily operations.
+            - Managed creative-campaign analytics for The Home Depot (BBDO NY) to inform optimization.
+            - Automated reporting pipelines to reduce manual effort.
             """
         )
 
+    # --- Merkle ---
+    with st.expander("🏢 **Lead Analyst | Merkle**"):
+        st.markdown("**📅 March 2022 - August 2023**")
+        st.markdown(
+            """
+            - Developed custom reports and dashboards to monitor key performance indicators.
+            - Built and deployed predictive analytics models to forecast future trends with 99% + accuracy.
+            - Wrote and optimized scripts/queries for multi-source data extraction and analysis.
+            """
+        )
+
+    # --- Ugam Solutions ---
+    with st.expander("🏢 **Senior Data Analyst | Ugam Solutions (A Merkle Company)**"):
+        st.markdown("**📅 May 2017 - March 2022**")
+        st.markdown(
+            """
+            - Analyzed large datasets to uncover patterns, signals, and actionable insights.
+            - Utilized Business Objects, BI tools, and data-warehouse solutions for reporting.
+            - Automated data visualizations and crafted compelling stories to drive decisions.
+            """
+        )
+
+    # --- Tata Consultancy Services ---
+    with st.expander("🏢 **Data Analyst | Tata Consultancy Services**"):
+        st.markdown("**📅 January 2016 - May 2017**")
+        st.markdown(
+            """
+            - Extracted, cleaned, and analyzed project data to support client deliverables.
+            - Created ad-hoc reports and basic dashboards to track performance metrics.
+            """
+        )
 # --- TAB 3: PROJECTS & LINKS ---
 with tab3:
     st.header("Find Me Online")
