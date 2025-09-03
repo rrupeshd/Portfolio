@@ -237,7 +237,7 @@ with tab1:
     if GEMINI_OK:
         st.caption('Primary model: Google Gemini <span class="mode-badge mode-ok">AVAILABLE</span>', unsafe_allow_html=True)
     else:
-        st.caption('Primary model: Google Gemini <span class="mode-badge mode-fb">**Notice:** The primary Gemini AI is currently unavailable. You are interacting with a local NLP-powered fallback bot. \n It can answer specific questions about skills and experience, but its understanding is limited. For the full AI experience, please check the Gemini API key.</span>', unsafe_allow_html=True)
+        st.caption('Primary model: Google Gemini <span class="mode-badge mode-fb">**Notice:** The primary Gemini AI is currently unavailable. You are interacting with a local NLP-powered fallback bot. \n It can answer specific questions about skills and experience, but its understanding is limited. For the full AI experience, please contact Rupesh personally to enable it.</span>', unsafe_allow_html=True)
 
     # Start conversation
     if "messages" not in st.session_state:
