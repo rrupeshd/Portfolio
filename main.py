@@ -218,10 +218,10 @@ with tab3:
         st.markdown("🔗 [My Other Web App](https://rupeshml.streamlit.app)")
         st.markdown("🔗 [Kaggle](https://www.kaggle.com/rupeshdubey999)")
     with col3:
-        st.subheader("📜 Other Links")
-        st.markdown("🔗 [Google Data Analytics Certificate](https://your-cert-link-placeholder.com)")
-        st.markdown("🔗 [Azure Data Scientist Certificate](https://your-cert-link-placeholder.com)")
-        st.markdown("🔗 [Python for Data Science Certificate](https://your-cert-link-placeholder.com)")
+        st.subheader("📜 Specializations")
+		cimglink="https://s3.amazonaws.com/coursera_assets/meta_images/generated/CERTIFICATE_LANDING_PAGE/CERTIFICATE_LANDING_PAGE"
+		image=cimglink+"~0N5VQAGERT8F/CERTIFICATE_LANDING_PAGE~0N5VQAGERT8F.jpeg"
+        st.image(image, caption="Python for Everybody")
 
     st.write("---") # Adding a separator for clarity
 
