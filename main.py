@@ -1,5 +1,6 @@
 import streamlit as st
 from pathlib import Path
+import google.generativeai as genai
 
 # --- PAGE SETUP ---
 st.set_page_config(
@@ -13,38 +14,27 @@ st.markdown("""
 <style>
     /* Main app background */
     .stApp {
-        background-color: #1a1a2e; /* Dark blue-purple background */
+        background-color: #1a1a2e;
         color: #e0e0e0;
     }
-    
-    /* --- FIX 3: REDUCE TOP PADDING --- */
     .block-container {
         padding-top: 2rem;
     }
-
-    /* Hero section card */
     .hero-card {
-        background-color: #162447; /* Slightly lighter card color */
+        background-color: #162447;
         padding: 2rem;
         border-radius: 15px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
         border: 1px solid #4a4e69;
     }
-    
-    .hero-card h1, .hero-card h2, .hero-card p {
-        color: #f2f2f2; /* Ensure high contrast text */
-    }
-
-    /* Style for the expander headers */
+    .hero-card h1, .hero-card h2, .hero-card p { color: #f2f2f2; }
     .st-emotion-cache-1de5w8g {
-        background-color: #1f4068; /* Expander header color */
+        background-color: #1f4068;
         border-radius: 10px;
         border: 1px solid #4a4e69;
     }
-
-    /* Style for download button */
     .stDownloadButton > button {
-        background-color: #e43f5a; /* A vibrant accent color */
+        background-color: #e43f5a;
         color: white;
         border-radius: 5px;
         padding: 10px 20px;
@@ -52,31 +42,81 @@ st.markdown("""
         font-weight: bold;
         transition: background-color 0.3s ease;
     }
-    .stDownloadButton > button:hover {
-        background-color: #b8324f;
-        border: none;
-    }
-    
-    /* Streamlit tabs styling */
-    .stTabs [data-baseweb="tab-list"] {
-		gap: 24px;
-	}
-	.stTabs [data-baseweb="tab"] {
-		height: 50px;
+    .stDownloadButton > button:hover { background-color: #b8324f; }
+    .stTabs [data-baseweb="tab-list"] { gap: 24px; }
+    .stTabs [data-baseweb="tab"] {
+        height: 50px;
         white-space: pre-wrap;
-		background-color: transparent;
-		border-radius: 4px 4px 0px 0px;
-		gap: 8px;
-		padding-top: 10px;
-		padding-bottom: 10px;
+        background-color: transparent;
+        border-radius: 4px 4px 0px 0px;
+        gap: 8px;
+        padding-top: 10px;
+        padding-bottom: 10px;
     }
-    .stTabs [aria-selected="true"] {
-  		background-color: #1f4068;
-	}
-
+    .stTabs [aria-selected="true"] { background-color: #1f4068; }
 </style>
 """, unsafe_allow_html=True)
 
+# --- GEMINI API CONFIGURATION ---
+try:
+    genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
+    model = genai.GenerativeModel('gemini-1.5-flash')
+except Exception as e:
+    st.error(f"Error configuring Gemini API: {e}. Make sure your GOOGLE_API_KEY is set in Streamlit secrets.", icon="🚨")
+    model = None
+
+# --- RESUME CONTEXT FOR THE BOT ---
+resume_context = """
+Rupesh Dubey - Lead, Marketing Science
+
+SUMMARY:
+Data Science professional with 9+ years of expertise in AI-driven analytics, forecasting, and automation. Skilled in developing predictive models, designing interactive dashboards (Power BI, Looker Studio), and deploying end-to-end data solutions using Python, SQL, and Excel VBA. Proven ability to lead teams, optimize workflows, and translate complex data into strategic business insights.
+
+CONTACT:
+- Email: rupeshdubey999@gmail.com
+- Phone: +91 820-054-2230
+- LinkedIn: linkedin.com/in/rupeshdubey9/
+
+WORK EXPERIENCE:
+1. Lead Analyst - Marketing Science, Annalect India (Aug 2023 - Present)
+   - Utilizing AI agents to deliver next-gen insights and deliverables.
+   - Lead a team of six analysts, overseeing daily operations and deliverables.
+   - Manage The Home Depot creative-campaign analytics for BBDO NY: extract pre-/post-campaign insights to inform optimization.
+   - Automate reporting pipelines to reduce manual effort and ensure timely delivery.
+
+2. Lead Analyst, Merkle (Mar 2022 - Aug 2023)
+   - Developed custom reports and dashboards to monitor key performance indicators.
+   - Built and deployed predictive analytics models to forecast future trends with 99%+ accuracy.
+   - Wrote and optimized scripts/queries for multi-source data extraction and analysis.
+   - Collaborated with stakeholders to define requirements and data solutions.
+
+3. Senior Data Analyst, Ugam Solutions - A Merkle Company (May 2017 - Mar 2022)
+   - Analyzed large datasets to uncover patterns, signals, and actionable insights.
+   - Utilized Business Objects, BI tools, and data-warehouse solutions for reporting.
+   - Automated data visualizations; crafted compelling stories to drive decisions.
+
+4. Data Analyst, Tata Consultancy Services (Jan 2016 - May 2017)
+   - Extracted, cleaned, and analyzed project data to support client deliverables.
+   - Created ad-hoc reports and basic dashboards to track performance metrics.
+
+EDUCATION:
+- BCA, Computer Applications | North Maharashtra University, India (June 2011 - Sep 2014)
+
+SKILLS:
+- Gen AI: ChatGPT, GPT Agents, Agentic AI, MCP, Prompt Engineering
+- Programming & Analysis: Python (Pandas, NumPy, Scikit-Learn, Matplotlib, Seaborn, Streamlit), R
+- Databases & Querying: SQL (MSSQL, MySQL; DML/ETL)
+- Dashboards & BI: Power BI, Looker Studio, Data Studio, Tableau, Dataroma
+- Automation: Excel VBA, Python scripting
+- Cloud & Big Data: Azure Databricks
+- Statistical & ML: Regression (linear, logistic), predictive modeling, SPSS
+
+ACHIEVEMENTS:
+- Achieved 70% cost savings by automating manual analytics workflows.
+- Reached 99% accuracy in revenue forecasts via trend-seasonality models.
+- Received 16+ "Best Performer of the Month" awards in one year.
+- Awarded the Golden Pyramid Award for top-year performance.
+"""
 
 # --- HERO SECTION ---
 with st.container():
@@ -87,82 +127,64 @@ with st.container():
     with col2:
         st.title("Rupesh Dubey")
         st.subheader("Lead - Marketing Science")
-        # --- FIX 2: REMOVED CITE TEXT ---
-        st.write(
-            """
-            Data Science professional with 9+ years of expertise in AI-driven analytics, forecasting, and automation.
-            Proven ability to lead teams, optimize workflows, and translate complex data into strategic business insights.
-            """
-        )
+        st.write("Data Science professional with 9+ years of expertise in AI-driven analytics, forecasting, and automation. Proven ability to lead teams, optimize workflows, and translate complex data into strategic business insights.")
         st.write("📍 Vapi, Gujarat, India")
     st.markdown('</div>', unsafe_allow_html=True)
-
 
 st.write("---")
 
 # --- TABS ---
 tab1, tab2, tab3, tab4 = st.tabs(["🤖 RupeshBot", "🏢 Work Experience", "🔗 Projects & Links", "📄 Download Resume"])
 
-# --- BOT RESPONSE FUNCTION (can stay here) ---
-def get_bot_response(user_input):
-    text = user_input.lower()
-    responses = {
-        "skills": """
-        Rupesh is skilled in:
-          - **Gen AI:** ChatGPT, GPT Agents, Agentic AI, MCP, Prompt Engineering
-          - **Programming & Analysis:** Python (Pandas, NumPy, Scikit-Learn), R
-          - **Databases:** SQL (MSSQL, MySQL)
-          - **Dashboards & BI:** Power BI, Looker Studio, Tableau
-          - **Automation:** Excel VBA, Python scripting
-          - **Cloud:** Azure Databricks
-          - **ML:** Regression, predictive modeling
-        """,
-        "experience": "Rupesh has 9+ years of experience. He is currently a Lead Analyst at Annalect India. Previously, he worked at Merkle, Ugam Solutions, and Tata Consultancy Services.",
-        "annalect": "At **Annalect India** (Aug 2023 - Present), Rupesh is a **Lead Analyst - Marketing Science**. He leads a team of six, manages The Home Depot campaign analytics, and automates reporting pipelines.",
-        "merkle": "Rupesh worked at **Merkle** (Mar 2022 - Aug 2023) as a **Lead Analyst**. He developed custom dashboards, built predictive models with over 99% accuracy, and collaborated with stakeholders on data solutions.",
-        "ugam": "As a **Senior Data Analyst** at **Ugam Solutions** (May 2017 - Mar 2022), he analyzed large datasets, used BI tools for reporting, and automated data visualizations.",
-        "tcs": "At **Tata Consultancy Services** (Jan 2016 - May 2017), Rupesh worked as a **Data Analyst**, where he extracted, cleaned, and analyzed project data and created ad-hoc reports.",
-        "education": "Rupesh holds a **Bachelor of Computer Applications (BCA)** from North Maharashtra University, India.",
-        "contact": "You can contact Rupesh via:\n"
-                   "  - **Email:** rupeshdubey999@gmail.com\n"
-                   "  - **Phone:** +91 820-054-2230\n"
-                   "  - **LinkedIn:** linkedin.com/in/rupeshdubey9/",
-        "achievements": "Key achievements include: 70% cost savings by automating analytics workflows, 99% accuracy in revenue forecasts, and receiving 16+ 'Best Performer' awards in one year.",
-        "python": "Rupesh is proficient in Python and its data science libraries like Pandas, NumPy, Scikit-Learn, and Streamlit.",
-        "hello": "Hello! How can I help you learn more about Rupesh's career?",
-        "hi": "Hi there! Feel free to ask me about Rupesh's skills, experience, or education."
-    }
-    for keyword, response in responses.items():
-        if keyword in text:
-            return response.strip()
-    return "I'm sorry, I can only answer questions about Rupesh Dubey's professional background. Please ask about his skills, experience, education, or achievements."
-
-# --- TAB 1: RUPESHBOT ---
+# --- TAB 1: RUPESHBOT (UPGRADED) ---
 with tab1:
     st.header("RupeshBot: Your AI Career Assistant")
-    st.write("Ask me anything about Rupesh's skills, experience, or education. I'm trained on his resume.")
-    st.write("*Note: I am a simple rule-based bot and can only answer specific questions based on keywords.*")
+    st.write("I am an AI assistant powered by Google Gemini. Ask me anything about Rupesh's career, skills, or experience based on his resume.")
     
-    # --- FIX 1: MOVED CHAT LOGIC INSIDE TAB 1 ---
     if "messages" not in st.session_state:
-        st.session_state.messages = [{"role": "assistant", "content": "Ask me about Rupesh's career!"}]
+        st.session_state.messages = [{"role": "assistant", "content": "Hi! How can I help you learn more about Rupesh's professional background today?"}]
         
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
             
-    if prompt := st.chat_input("Ask about skills, experience, education..."):
+    if prompt := st.chat_input("Ask about his experience at Merkle..."):
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.markdown(prompt)
+        
         with st.chat_message("assistant"):
-            response = get_bot_response(prompt)
-            st.markdown(response)
-        st.session_state.messages.append({"role": "assistant", "content": response})
+            if model:
+                # This is the prompt that instructs the AI
+                full_prompt = f"""
+                You are RupeshBot, a helpful AI assistant for Rupesh Dubey's portfolio.
+                Your ONLY task is to answer questions about Rupesh based on the resume context provided below.
+                Do NOT answer any questions that are not related to the resume.
+                If the answer is not in the context, simply say "I'm sorry, that information is not available in Rupesh's resume."
+                Be friendly and conversational.
+
+                RESUME CONTEXT:
+                {resume_context}
+
+                USER'S QUESTION:
+                "{prompt}"
+                """
+                try:
+                    response = model.generate_content(full_prompt)
+                    response_text = response.text
+                except Exception as e:
+                    response_text = f"An error occurred: {e}"
+                st.markdown(response_text)
+                st.session_state.messages.append({"role": "assistant", "content": response_text})
+            else:
+                st.error("The AI model is not configured. Please check the API key.")
+
+# --- The rest of the tabs remain the same ---
 
 # --- TAB 2: WORK EXPERIENCE ---
 with tab2:
     st.header("Interactive Career Timeline")
+    # Expander sections go here as before...
     with st.expander("🏢 **Lead Analyst - Marketing Science | Annalect India**", expanded=True):
         st.markdown("**📅 August 2023 - Present**")
         st.markdown(
@@ -199,13 +221,12 @@ with tab2:
             - Created ad-hoc reports and basic dashboards to track performance metrics.
             """
         )
-        
+
 # --- TAB 3: PROJECTS & LINKS ---
 with tab3:
     st.header("Find Me Online")
     st.write("Links to my socials, professional profiles, and project repositories.")
-    
-    # --- Links Section ---
+    # Link sections go here as before...
     col1, col2, col3 = st.columns(3, gap="medium")
     with col1:
         st.subheader("🌐 Socials")
@@ -254,7 +275,6 @@ with tab3:
 with tab4:
     st.header("Download My Resume")
     st.write("Click the button below to download the latest version of my resume in PDF format.")
-    # Correcting the filename to check for
     resume_file = Path(__file__).parent / "Rupesh_Resume.pdf"
     if resume_file.exists():
         with open(resume_file, "rb") as pdf_file:
@@ -266,6 +286,4 @@ with tab4:
             mime="application/octet-stream"
         )
     else:
-        # Correcting the error message to be consistent
         st.error("Resume PDF not found. Please make sure 'Rupesh_Resume.pdf' is in the same folder as the main.py file.")
-		
