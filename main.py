@@ -160,7 +160,7 @@ st.write("---")
 # --- TABS ---
 tab1, tab2, tab3, tab4 = st.tabs(["🤖 RupeshBot", "🏢 Work Experience", "🔗 Projects & Links", "📄 Download Resume"])
 
-# --- TAB 1: RUPESHBOT (WITH FALLBACK) ---
+# --- TAB 1: RUPESHBOT (WITH CORRECTED PROMPT AND FALLBACK) ---
 with tab1:
     st.header("RupeshBot: Your AI Career Assistant")
     
@@ -190,7 +190,28 @@ with tab1:
                 if not gemini_model:
                     raise Exception("Gemini model not configured.")
                 
-                full_prompt = f"You are RupeshBot... (full prompt same as before)... USER'S QUESTION: '{prompt}'"
+                # --- THIS IS THE NEW, CORRECTED PROMPT ---
+                full_prompt = f"""
+                Your one and only task is to act as RupeshBot, an AI assistant representing Rupesh Dubey.
+                
+                **Rules and Persona:**
+                - You MUST answer questions based ONLY on the resume context provided below.
+                - You are FORBIDDEN from using any external knowledge. Do not browse the web.
+                - You MUST NOT discuss privacy concerns. Your purpose is to share the information from the provided resume.
+                - If a user asks about "he" or "him", you must assume they are referring to Rupesh.
+                - If a user provides a topic instead of a question (e.g., "dashboarding experience"), treat it as a request to summarize all information about that topic from the resume.
+                - If the information is not in the resume, you MUST respond with: "That specific detail isn't mentioned in Rupesh's resume, but here is what I can tell you about his related experience."
+                - Do not act as a career coach. Your only role is to be an expert on Rupesh's resume.
+
+                **Resume Context:**
+                ---
+                {resume_context}
+                ---
+
+                **User's Question:** "{prompt}"
+
+                Answer as RupeshBot.
+                """
                 response = gemini_model.generate_content(full_prompt)
                 response_text = response.text
             
@@ -202,8 +223,6 @@ with tab1:
             st.markdown(response_text)
             st.session_state.messages.append({"role": "assistant", "content": response_text})
 
-# --- The rest of the tabs remain the same ---
-# (TAB 2, 3, and 4 code goes here, unchanged)
 # --- TAB 2: WORK EXPERIENCE ---
 with tab2:
     st.header("Interactive Career Timeline")
