@@ -101,9 +101,10 @@ def train_fallback_bot():
         with open('training_data.json', 'r') as f:
             training_data = json.load(f)
     except FileNotFoundError:
-        st.error("`training_data.json` not found. Please create the training file.")
+        # This error is now handled gracefully in the main app
         return None
 
+    # Define responses inside the function to be part of the cached resource
     responses = {
         "greetings": "Hello! How can I help you learn more about Rupesh's career?",
         "skills": "Rupesh is skilled in Gen AI, Python (Pandas, NumPy, Scikit-Learn), R, SQL, Power BI, Looker Studio, Tableau, Excel VBA, and Azure Databricks.",
@@ -134,7 +135,7 @@ fallback_system = train_fallback_bot()
 
 def get_fallback_response(prompt):
     if fallback_system is None:
-        return "The fallback system is not configured correctly."
+        return "The fallback bot isn't working because `training_data.json` was not found. Please check the file."
     
     fallback_model, responses = fallback_system
     confidence_threshold = 0.25
@@ -148,7 +149,8 @@ def get_fallback_response(prompt):
     else:
         return responses["fallback"]
 
-# --- HERO SECTION ---
+# --- HERO SECTION & OTHER TABS ---
+# (This section is complete and requires no changes)
 with st.container():
     st.markdown('<div class="hero-card">', unsafe_allow_html=True)
     col1, col2 = st.columns([1, 2], gap="large")
@@ -176,7 +178,7 @@ with tab1:
         st.warning("""
         **Notice:** The primary Gemini AI is currently unavailable. You are interacting with a local NLP-powered fallback bot.
         
-        It can answer specific questions about skills and experience, but its understanding is limited. For the full AI experience, please ask Rupesh to enable the Gemini API.
+        It can answer specific questions about skills and experience, but its understanding is limited. For the full AI experience, please check the Gemini API key.
         """, icon="⚠️")
 
     if "messages" not in st.session_state:
@@ -218,7 +220,7 @@ with tab1:
 
                 Answer as RupeshBot.
                 """
-                # THIS IS THE BUG FIX: Use 'gemini_model', not 'model'
+                # THIS IS THE BUG FIX: Use 'gemini_model', not the old 'model' variable
                 response = gemini_model.generate_content(full_prompt)
                 response_text = response.text
             
@@ -297,6 +299,7 @@ with tab3:
 
     cimglink="https://s3.amazonaws.com/coursera_assets/meta_images/generated/CERTIFICATE_LANDING_PAGE/CERTIFICATE_LANDING_PAGE"
     with col1:
+        image=cimglink+"~7FLA7JPYU273/CERTIFICATE_LANDING_PAGE~7FLA7JPYU273.jpeg"
         st.image(image, caption="Python for Data Science, AI & Development")
     with col2:
         image=cimglink+"~DZSE9773S8A2/CERTIFICATE_LANDING_PAGE~DZSE9773S8A2.jpeg"
@@ -308,7 +311,7 @@ with tab3:
         image=cimglink+"~NAJL962VEGM5/CERTIFICATE_LANDING_PAGE~NAJL962VEGM5.jpeg"
         st.image(image, caption="Basic Statistics")
     with col5:
-        image=cimglink+"~DFU5L2ABS8TD/CERTIFICATE_LANDING_PAGE~DFU5L2ABS8TD.jpeg"
+        image=cimglink+"~DFU_L2ABS8TD/CERTIFICATE_LANDING_PAGE~DFU5L2ABS8TD.jpeg"
         st.image(image, caption="Business Metrics for Data-Driven Companies")
     with col6:
         image=cimglink+"~THW33CM8UBUH/CERTIFICATE_LANDING_PAGE~THW33CM8UBUH.jpeg"
