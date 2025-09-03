@@ -1,97 +1,14 @@
 {
-  "greetings": [
-    "hello",
-    "hi",
-    "hey",
-    "how are you",
-    "good morning",
-    "greetings"
-  ],
-  "skills": [
-    "what are his skills?",
-    "show me his technical skills",
-    "what programming languages does he know?",
-    "tell me about his skills",
-    "skills",
-    "technical abilities",
-    "what tools does he use?",
-    "tooling",
-    "programming"
-  ],
-  "skills_python": [
-    "python skills",
-    "does he know python?",
-    "tell me about his python experience",
-    "python"
-  ],
-  "skills_dashboard": [
-    "dashboarding experience",
-    "has he created dashboards?",
-    "what dashboard tools does he use?",
-    "power bi",
-    "tableau",
-    "looker studio",
-    "dashboard"
-  ],
-  "experience_ugam": [
-    "tell me about his ugam experience",
-    "what did he do at ugam solutions?",
-    "ugam",
-    "ugam solutions",
-    "ugam role",
-    "experience at ugam"
-  ],
-  "experience_merkle": [
-    "what was his role at merkle?",
-    "merkle experience",
-    "merkle",
-    "experience at merkle"
-  ],
-  "experience_annalect": [
-    "what is he doing at annalect?",
-    "annalect role",
-    "annalect",
-    "experience at annalect",
-    "current role"
-  ],
-  "experience_tcs": [
-    "tell me about his time at tcs",
-    "tcs experience",
-    "tata consultancy services",
-    "tcs",
-    "experience at tcs"
-  ],
-  "education": [
-    "what is his education?",
-    "where did he study?",
-    "what is his degree?",
-    "education",
-    "college",
-    "university"
-  ],
-  "contact": [
-    "how can I contact him?",
-    "what's his email or phone number?",
-    "contact info",
-    "contact",
-    "email",
-    "phone"
-  ],
-  "achievements": [
-    "what are his achievements?",
-    "any awards?",
-    "show me his accomplishments",
-    "achievements",
-    "awards"
-  ],
-  "experience_general": [
-    "what is his work experience?",
-    "tell me about his career",
-    "where has he worked?",
-    "experience",
-    "work history",
-    "job experience",
-    "professional experience",
-    "career summary"
-  ]
+  "greetings": ["hello", "hi", "hey", "how are you", "good morning", "greetings"],
+  "skills": ["what are his skills?", "show me his technical skills", "what programming languages does he know?", "tell me about his skills", "skills", "technical abilities", "what tools does he use?", "tooling", "programming"],
+  "skills_python": ["python skills", "does he know python?", "tell me about his python experience", "python"],
+  "skills_dashboard": ["dashboarding experience", "has he created dashboards?", "what dashboard tools does he use?", "power bi", "tableau", "looker studio", "dashboard"],
+  "experience_ugam": ["tell me about his ugam experience", "what did he do at ugam solutions?", "ugam", "ugam solutions", "ugam role", "experience at ugam"],
+  "experience_merkle": ["what was his role at merkle?", "merkle experience", "merkle", "experience at merkle"],
+  "experience_annalect": ["what is he doing at annalect?", "annalect role", "annalect", "experience at annalect", "current role"],
+  "experience_tcs": ["tell me about his time at tcs", "tcs experience", "tata consultancy services", "tcs", "experience at tcs"],
+  "education": ["what is his education?", "where did he study?", "what is his degree?", "education", "college", "university"],
+  "contact": ["how can I contact him?", "what's his email or phone number?", "contact info", "contact", "email", "phone"],
+  "achievements": ["what are his achievements?", "any awards?", "show me his accomplishments", "achievements", "awards"],
+  "experience_general": ["what is his work experience?", "tell me about his career", "where has he worked?", "experience", "work history", "job experience", "professional experience", "career summary"]
 }
