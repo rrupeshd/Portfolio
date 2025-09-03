@@ -204,6 +204,8 @@ with tab2:
 with tab3:
     st.header("Find Me Online")
     st.write("Links to my socials, professional profiles, and project repositories.")
+    
+    # --- Links Section ---
     col1, col2, col3 = st.columns(3, gap="medium")
     with col1:
         st.subheader("🌐 Socials")
@@ -213,42 +215,46 @@ with tab3:
     with col2:
         st.subheader("💻 Professional")
         st.markdown("🔗 [GitHub](https://github.com/rrupeshd)")
-        st.markdown("🔗 [My Other Web App Link](rupeshml.streamlit.app)")
+        st.markdown("🔗 [My Other Web App](https://rupeshml.streamlit.app)")
         st.markdown("🔗 [Kaggle](https://www.kaggle.com/rupeshdubey999)")
     with col3:
-        st.subheader("📜 Certifications")
-        st.markdown("🔗 [Google Data Analytics]()")
-        st.markdown("🔗 [Azure Data Scientist](https://your-cert-link-placeholder.com)")
-        st.markdown("🔗 [Python for Data Science](https://your-cert-link-placeholder.com)")
-	
-	st.subheader("📜 Certifications")
+        st.subheader("📜 Other Links")
+        st.markdown("🔗 [Google Data Analytics Certificate](https://your-cert-link-placeholder.com)")
+        st.markdown("🔗 [Azure Data Scientist Certificate](https://your-cert-link-placeholder.com)")
+        st.markdown("🔗 [Python for Data Science Certificate](https://your-cert-link-placeholder.com)")
+
+    st.write("---") # Adding a separator for clarity
+
+    # --- Certifications Images Section ---
+    st.subheader("My Certifications Showcase")
     col1, col2, col3, col4, col5, col6 = st.columns(6)
 
     cimglink="https://s3.amazonaws.com/coursera_assets/meta_images/generated/CERTIFICATE_LANDING_PAGE/CERTIFICATE_LANDING_PAGE"
     with col1:
         image=cimglink+"~7FLA7JPYU273/CERTIFICATE_LANDING_PAGE~7FLA7JPYU273.jpeg"
-        st.image(image, caption="Python for Data Science, AI & Development", output_format="auto")
+        st.image(image, caption="Python for Data Science, AI & Development")
     with col2:
         image=cimglink+"~DZSE9773S8A2/CERTIFICATE_LANDING_PAGE~DZSE9773S8A2.jpeg"
-        st.image(image, caption="SQL for Data Science", output_format="auto")
+        st.image(image, caption="SQL for Data Science")
     with col3:
         image=cimglink+"~9CLH6FXWBB3G/CERTIFICATE_LANDING_PAGE~9CLH6FXWBB3G.jpeg"
-        st.image(image, caption="Data Visualization and Communication with Tableau", output_format="auto")
+        st.image(image, caption="Data Visualization with Tableau")
     with col4:
         image=cimglink+"~NAJL962VEGM5/CERTIFICATE_LANDING_PAGE~NAJL962VEGM5.jpeg"
-        st.image(image, caption="Basic Statistics", output_format="auto")
+        st.image(image, caption="Basic Statistics")
     with col5:
         image=cimglink+"~DFU5L2ABS8TD/CERTIFICATE_LANDING_PAGE~DFU5L2ABS8TD.jpeg"
-        st.image(image, caption="Business Metrics for Data-Driven Companies", output_format="auto")
+        st.image(image, caption="Business Metrics for Data-Driven Companies")
     with col6:
         image=cimglink+"~THW33CM8UBUH/CERTIFICATE_LANDING_PAGE~THW33CM8UBUH.jpeg"
-        st.image(image, caption="Tools for Data Science", output_format="auto")
+        st.image(image, caption="Tools for Data Science")
 
 
 # --- TAB 4: DOWNLOAD RESUME ---
 with tab4:
     st.header("Download My Resume")
     st.write("Click the button below to download the latest version of my resume in PDF format.")
+    # Correcting the filename to check for
     resume_file = Path(__file__).parent / "Rupesh_Resume.pdf"
     if resume_file.exists():
         with open(resume_file, "rb") as pdf_file:
@@ -260,4 +266,6 @@ with tab4:
             mime="application/octet-stream"
         )
     else:
-        st.error("Resume PDF not found. Please make sure 'resume.pdf' is in the same folder as the app.py file.")
+        # Correcting the error message to be consistent
+        st.error("Resume PDF not found. Please make sure 'Rupesh_Resume.pdf' is in the same folder as the main.py file.")
+		
