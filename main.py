@@ -108,7 +108,7 @@ def init_gemini():
 
     try:
         genai.configure(api_key=api_key)
-        model = genai.GenerativeModel("gemini-1.5-flash")
+        model = genai.GenerativeModel("gemini-2.5-flash")
         # Low-cost ping; if this fails we consider Gemini unavailable
         _ = model.count_tokens("ping")
         return model, True
